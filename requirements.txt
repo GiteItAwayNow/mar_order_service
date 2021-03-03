@@ -14,6 +14,7 @@ PyPika==0.44.1
 pytz==2020.5
 redis==3.5.3
 rejson==0.5.4
+simplejson==3.17.2
 six==1.15.0
 starlette==0.13.6
 tortoise-orm==0.16.21

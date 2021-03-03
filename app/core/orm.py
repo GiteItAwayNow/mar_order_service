@@ -4,7 +4,10 @@ from tortoise.contrib.fastapi import register_tortoise
 from app.core.settings import settings
 
 
-ORM_MODELS = []
+ORM_MODELS = [
+    'app.models.order_payment_methods', 'app.models.order_products',
+    'app.models.orders', 'aerich.models'
+]
 
 TORTOISE_ORM = {
     'connections': {

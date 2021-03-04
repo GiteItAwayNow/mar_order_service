@@ -5,6 +5,7 @@ from kafka import KafkaConsumer
 
 from app.core.settings import settings
 from app.services.accounts_service import accounts_service
+from app.services.jwt_encoder import jwt_encoder
 
 
 class KafkaClient():
@@ -37,6 +38,14 @@ class KafkaClient():
                 business_profile_id = topic_message_value['business_profile_id']
                 business_profile_data = await accounts_service.get_business_profile_data(
                     business_profile_id
+                )
+            except Exception:
+                # TODO: уточнить исключения и добавит логгер
+                continue
+
+            try:
+                chat_message_sender_jwt = jwt_encoder.encode_chat_message_sender_id(
+                    business_profile_data
                 )
             except Exception:
                 # TODO: уточнить исключения и добавит логгер

@@ -4,6 +4,7 @@ import json
 from kafka import KafkaConsumer
 
 from app.core.settings import settings
+from app.services.accounts_service import accounts_service
 
 
 class KafkaClient():
@@ -32,7 +33,14 @@ class KafkaClient():
                 # TODO: add logger
                 continue
 
-            print(topic_message_value)
+            try:
+                business_profile_id = topic_message_value['business_profile_id']
+                business_profile_data = await accounts_service.get_business_profile_data(
+                    business_profile_id
+                )
+            except Exception:
+                # TODO: уточнить исключения и добавит логгер
+                continue
 
 
     @staticmethod

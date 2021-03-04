@@ -7,6 +7,20 @@ from app.core.exceptions import ObjectDoesNotExist
 class BaseRepo():
     '''Класс с методами CRUD операций'''
 
+    async def bulk_create(self, objects_data):
+        '''Сделать массовое создание объектов в БД
+
+        objects_data: list[dict]
+            список с данными для каждого объекта,
+            который нужно создать
+
+        '''
+        objects_to_create = [
+            self.db_model(**object_data) for object_data in objects_data
+        ]
+
+        await self.db_model.bulk_create(objects_to_create)
+
     async def create_object(self, obj_data_dict={}):
         '''Создать новый объект в БД
 

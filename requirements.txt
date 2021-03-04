@@ -9,6 +9,7 @@ h11==0.12.0
 iso8601==0.1.14
 kafka-python==2.0.2
 pydantic==1.8
+PyJWT==1.7.1
 pyparsing==2.4.7
 PyPika==0.44.1
 pytz==2020.5

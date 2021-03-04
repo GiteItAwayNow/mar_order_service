@@ -7,6 +7,7 @@ from app.repos.order_products import OrderProductRepo
 from app.repos.orders import OrderRepo
 from app.schemas.orders import OrderCreateSchema
 from app.services.cart_storage import cart_storage
+from app.services.order_chat_message_sender import order_chat_message_sender
 from app.services.router_dependencies import get_user_id_from_token
 
 
@@ -44,5 +45,8 @@ async def create_order(
         await OrderProductRepo().bulk_create(order_obj, user_cart_storage_json)
 
     cart_storage.delete_user_cart_json(current_user_id)
+
+    order_chat_message = await order_chat_message_sender.make_message(order_obj)
+    order_chat_message_sender.send_message(order_chat_message)
 
     return Response(status_code=status.HTTP_201_CREATED)

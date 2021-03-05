@@ -5,6 +5,7 @@ from kafka import KafkaConsumer
 
 from app.core.settings import settings
 from app.services.accounts_service import accounts_service
+from app.services.order_chat_message_sender import order_chat_message_sender
 from app.services.jwt_encoder import jwt_encoder
 
 
@@ -51,6 +52,13 @@ class KafkaClient():
                 # TODO: уточнить исключения и добавит логгер
                 continue
 
+            try:
+                await order_chat_message_sender.send(
+                    topic_message_value, chat_message_sender_jwt
+                )
+            except Exception:
+                # TODO: уточнить исключения и добавит логгер
+                continue
 
     @staticmethod
     def parse_topic_message(topic_message):

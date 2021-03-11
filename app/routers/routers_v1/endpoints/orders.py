@@ -7,6 +7,7 @@ from app.repos.order_products import OrderProductRepo
 from app.repos.orders import OrderRepo
 from app.schemas.orders import OrderCreateSchema
 from app.services.accounts_service import accounts_service
+from app.services.chats_service import chats_service
 from app.services.cart_storage import cart_storage
 from app.services.jwt_encoder import jwt_encoder
 from app.services.router_dependencies import get_user_id_from_token
@@ -54,6 +55,10 @@ async def create_order(
     # Закодировать id пользователя для отправки сообщения в чат
     business_user_jwt = jwt_encoder.encode_user_id(
         business_user_data['id']
+    )
+    # Отправить заказ в чат клиента
+    chat_response = await chats_service.send_order(
+        order_obj, business_user_jwt
     )
 
     return Response(status_code=status.HTTP_201_CREATED)

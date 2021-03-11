@@ -53,6 +53,8 @@ source .env
 
 * ACCOUNT_SERVICE_ADDRESS: адрес сервиса аккаунтов
 * GET_USER_BY_BUSINESS_ID_ENDPOINT: эндпоинт для получения данных юзера по id его бизнес-профиля
+* CHATS_SERVICE_ADDRESS: адрес сервиса чатов
+* SEND_CHAT_MESSAGE_ENDPOINT: эндпоинт для отправки сообщения в чат
 
 ### 5. Добавить RedisJSON модуль для Redis
 

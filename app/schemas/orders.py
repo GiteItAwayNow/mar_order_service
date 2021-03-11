@@ -7,6 +7,7 @@ from tortoise.contrib.pydantic.base import PydanticModel
 from app.models.enums import OrderStatusEnum
 from app.models.orders import OrderModel
 from app.schemas.mixins import ObjChangesDatetimeMixin
+from app.schemas.order_chats import OrderChatSchema
 from app.schemas.order_payment_methods import OrderPaymentMethodSchema
 from app.schemas.order_products import OrderProductSchema
 from app.schemas.utils import prepare_price_for_schema
@@ -58,6 +59,7 @@ class OrderReadSchema(ObjChangesDatetimeMixin, OrderBaseSchema):
     order_price: condecimal(max_digits=10, decimal_places=2)
     total_price: condecimal(max_digits=10, decimal_places=2)
     products: List[OrderProductSchema]
+    chat: Optional[OrderChatSchema] = None
 
     class Config:
 

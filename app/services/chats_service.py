@@ -25,8 +25,6 @@ class ChatsService():
             сообщение с данными заказа
 
         '''
-        await order_obj.fetch_related('products', 'payment_method')
-
         order_data = OrderReadSchema.from_orm(order_obj).dict()
 
         order_message_data = {

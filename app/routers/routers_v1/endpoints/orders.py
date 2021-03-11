@@ -5,7 +5,9 @@ from tortoise.transactions import in_transaction
 
 from app.repos.order_products import OrderProductRepo
 from app.repos.orders import OrderRepo
-from app.schemas.orders import OrderCreateSchema
+from app.schemas.orders import (
+    OrderCreateSchema, OrderReadSchema
+)
 from app.services.accounts_service import accounts_service
 from app.services.chats_service import chats_service
 from app.services.cart_storage import cart_storage
@@ -16,7 +18,7 @@ from app.services.router_dependencies import get_user_id_from_token
 router = APIRouter()
 
 
-@router.post('/orders', status_code=201)
+@router.post('/orders', response_model=OrderReadSchema, status_code=201)
 async def create_order(
     order: OrderCreateSchema, current_user_id: str = Depends(get_user_id_from_token)
     ):
@@ -46,6 +48,8 @@ async def create_order(
 
         await OrderProductRepo().bulk_create(order_obj, user_cart_storage_json)
 
+        await order_obj.fetch_related('products', 'payment_method')
+
     cart_storage.delete_user_cart_json(current_user_id)
 
     # Получить данные пользователя по id его БП
@@ -61,4 +65,7 @@ async def create_order(
         order_obj, business_user_jwt
     )
 
-    return Response(status_code=status.HTTP_201_CREATED)
+    chat_response['business_user'] = business_user_data
+    setattr(order_obj, 'chat', chat_response)
+
+    return order_obj

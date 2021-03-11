@@ -51,6 +51,9 @@ source .env
 * DB_HOST: хост БД
 * DB_PORT: порт БД
 
+* ACCOUNT_SERVICE_ADDRESS: адрес сервиса аккаунтов
+* GET_USER_BY_BUSINESS_ID_ENDPOINT: эндпоинт для получения данных юзера по id его бизнес-профиля
+
 ### 5. Добавить RedisJSON модуль для Redis
 
 1. Скачать или сбилдить модуль

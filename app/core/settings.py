@@ -34,6 +34,10 @@ class Settings(BaseSettings):
     REDIS_DB_NUMBER: int
     REDIS_CONNECTION_POOL: Optional[redis.ConnectionPool] = None
 
+    # Accounts service
+    ACCOUNTS_SERVICE_ADDRESS: str
+    GET_USER_BY_BUSINESS_ID_ENDPOINT: str
+
     @validator('DATABASE_URL', pre=True)
     def assemble_db_connection(cls, value, values):
         '''Сделать урл для подключения к БД'''

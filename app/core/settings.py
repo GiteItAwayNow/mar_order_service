@@ -34,10 +34,6 @@ class Settings(BaseSettings):
     REDIS_DB_NUMBER: int
     REDIS_CONNECTION_POOL: Optional[redis.ConnectionPool] = None
 
-    # Kafka
-    KAFKA_BROKERS: str
-    SEND_ORDER_CHAT_MESSAGE: str
-
     @validator('DATABASE_URL', pre=True)
     def assemble_db_connection(cls, value, values):
         '''Сделать урл для подключения к БД'''
@@ -64,14 +60,6 @@ class Settings(BaseSettings):
             encoding='utf8',
             decode_responses=True
         )
-
-    @validator("KAFKA_BROKERS")
-    def split_brokers_list(cls, brokers_list: str):
-        '''Разделить строку, содержащую адреса брокеров Kafka'''
-        return brokers_list.split(',')
-
-    class Config:
-        case_sensitive = True
 
 
 settings = Settings()

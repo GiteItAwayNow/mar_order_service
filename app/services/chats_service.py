@@ -2,7 +2,7 @@ from aiohttp import ClientSession
 
 from app.core.settings import settings
 from app.schemas.orders import OrderReadSchema
-from app.services.decimal_json_serializers import DecimalEncoder
+from app.utils.decimal_json_serializers import DecimalEncoder
 
 
 class ChatsService():

@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from rejson import Client, Path
 
 from app.core.settings import settings
-from app.services.decimal_json_serializers import DecimalDecoder
+from app.utils.decimal_json_serializers import DecimalDecoder
 
 
 class CartStorage():

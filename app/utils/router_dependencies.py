@@ -21,7 +21,7 @@ async def get_user_id_from_token(token: str = Depends(oauth2_scheme)):
     except KeyError:
         raise HTTPException(
             detail='Sorry, you can\'t access this resource',
-            status_code=403
+            status_code=401
         )
 
     return user_id

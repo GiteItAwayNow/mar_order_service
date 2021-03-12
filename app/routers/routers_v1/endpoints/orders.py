@@ -11,8 +11,8 @@ from app.schemas.orders import (
 from app.services.accounts_service import accounts_service
 from app.services.chats_service import chats_service
 from app.services.cart_storage import cart_storage
-from app.services.jwt_encoder import jwt_encoder
-from app.services.router_dependencies import get_user_id_from_token
+from app.utils.jwt_encoder import jwt_encoder
+from app.utils.router_dependencies import get_user_id_from_token
 
 
 router = APIRouter()

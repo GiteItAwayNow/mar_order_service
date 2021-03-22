@@ -42,6 +42,10 @@ class Settings(BaseSettings):
     CHATS_SERVICE_ADDRESS: str
     SEND_CHAT_MESSAGE_ENDPOINT: str
 
+    # TELEGRAM
+    ORDERS_TELEGRAM_BOT_TOKEN: str
+    ORDERS_TELEGRAM_CHAT_ID: str
+
     @validator('DATABASE_URL', pre=True)
     def assemble_db_connection(cls, value, values):
         '''Сделать урл для подключения к БД'''

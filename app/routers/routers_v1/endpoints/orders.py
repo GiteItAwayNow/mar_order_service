@@ -11,6 +11,7 @@ from app.schemas.orders import (
 from app.services.accounts_service import accounts_service
 from app.services.chats_service import chats_service
 from app.services.cart_storage import cart_storage
+from app.services.orders_telegram_bot import orders_telegram_bot
 from app.utils.jwt_encoder import jwt_encoder
 from app.utils.router_dependencies import get_user_id_from_token
 
@@ -40,6 +41,9 @@ async def create_order(
     order_data_dict['client_id'] = current_user_id
 
     user_cart_storage_json = cart_storage.get_user_cart_json(current_user_id)
+    # TODO: Временный костыль - убрать после интеграции доставки
+    user_cart_storage_json['delivery_price'] = 120
+    user_cart_storage_json['total_price'] = user_cart_storage_json['order_price'] + user_cart_storage_json['delivery_price']
 
     async with in_transaction():
         order_obj = await OrderRepo().create_object(
@@ -67,5 +71,10 @@ async def create_order(
 
     chat_response['business_user'] = business_user_data
     setattr(order_obj, 'chat', chat_response)
+
+    # Отправить данные заказа в телеграм чат
+    orders_telegram_bot.send_order_message(
+        order_obj, business_user_data, order_data_dict
+    )
 
     return order_obj

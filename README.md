@@ -56,6 +56,9 @@ source .env
 * CHATS_SERVICE_ADDRESS: адрес сервиса чатов
 * SEND_CHAT_MESSAGE_ENDPOINT: эндпоинт для отправки сообщения в чат
 
+* ORDERS_TELEGRAM_BOT_TOKEN: токен для управления Телеграм ботом
+* ORDERS_TELEGRAM_CHAT_ID: id чата, в который отправляются данные заказа
+
 ### 5. Добавить RedisJSON модуль для Redis
 
 1. Скачать или сбилдить модуль

@@ -18,7 +18,7 @@ class DecimalEncoder(JSONEncoder):
 class DecimalDecoder(JSONDecoder):
     '''Класс для кодирования типа Decimal в строку'''
     price_fields = (
-        'delivery_price', 'to_free_delivery', 'order_price', 'total_price'
+        'delivery_price', 'order_price', 'total_price'
     )
 
     def decode(self, obj):

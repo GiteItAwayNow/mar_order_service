@@ -41,9 +41,6 @@ async def create_order(
     order_data_dict['client_id'] = current_user_id
 
     user_cart_storage_json = cart_storage.get_user_cart_json(current_user_id)
-    # TODO: Временный костыль - убрать после интеграции доставки
-    user_cart_storage_json['delivery_price'] = 120
-    user_cart_storage_json['total_price'] = user_cart_storage_json['order_price'] + user_cart_storage_json['delivery_price']
 
     async with in_transaction():
         order_obj = await OrderRepo().create_object(

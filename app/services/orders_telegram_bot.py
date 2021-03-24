@@ -21,7 +21,9 @@ class OrdersTelegramBot(Bot):
 
         return order_datetime_moscow
 
-    def create_order_message(self, order_obj, business_user_data, order_data_dict):
+    def create_order_message(
+        self, order_obj, business_user_data, client_user_data, order_data_dict
+        ):
         '''Распарсить данные заказа для создания сообщения
         в Телегам
 
@@ -62,7 +64,10 @@ class OrdersTelegramBot(Bot):
             f'<i>Адрес бизнеса</i>: <b>{business_user_data["location"]["address"]}</b>\n'
             f'<i>Дата заказа</i>: <b>{order_date}</b>\n'
             f'<i>Время заказа</i>: <b>{order_time} (МСК)</b>\n\n'
-            f'<i>Адрес доставки</i>: <b>{delivery_address}</b>\n\n'
+            f'<i>Адрес доставки</i>: <b>{delivery_address}</b>\n'
+            f'<i>Имя клиента</i>: <b>{client_user_data["name"]}</b>\n'
+            f'<i>Логин клиента</i>: <b>{client_user_data["username"]}</b>\n'
+            f'<i>Телефон клиента</i>: <b>{client_user_data["phone"]}</b>\n\n'
             '<i>Состав заказа</i>:\n'
             f'{order_products_list}\n\n'
             f'<i>Стоимость заказа</i>: <b>{order_price} р.</b>\n'
@@ -72,7 +77,9 @@ class OrdersTelegramBot(Bot):
 
         return order_message
 
-    def send_order_message(self, order_obj, business_user_data, order_data_dict):
+    def send_order_message(
+        self, order_obj, business_user_data, client_user_data, order_data_dict
+        ):
         '''Отправить сообщение с данными заказа в чат Телеграма
 
         Args:
@@ -85,7 +92,7 @@ class OrdersTelegramBot(Bot):
 
         '''
         order_message = self.create_order_message(
-            order_obj, business_user_data, order_data_dict
+            order_obj, business_user_data, client_user_data, order_data_dict
         )
 
         self.send_message(

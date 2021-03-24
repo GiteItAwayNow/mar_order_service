@@ -17,7 +17,8 @@ class AccountService():
 
         Returns:
         -----------------------
-        объект Response с кодом 201
+        business_user_data: dict
+            данными пользователя-бизнеса
 
         '''
         raw_business_user_url = (
@@ -27,6 +28,31 @@ class AccountService():
         business_user_data = await self.send_request(business_user_url)
 
         return business_user_data
+
+    async def get_user_data(self, user_id):
+        '''Получить данные пользователя из сервиса аккаунтов
+        по его id
+
+        Args:
+        -----------------------
+        user_id: UUID
+            id пользователя
+
+        Returns:
+        -----------------------
+        user_data: dict
+            данными пользователя
+
+        '''
+        # TODO: Если получение данных клиента(заказчика)
+        # останется, то надо будет вынести эндпоинт в переменную
+        # окружения
+        user_url = (
+            f'{settings.ACCOUNTS_SERVICE_ADDRESS}/v1/users/{user_id}'
+        )
+        user_data = await self.send_request(user_url)
+
+        return user_data
 
     @staticmethod
     async def send_request(data_url):

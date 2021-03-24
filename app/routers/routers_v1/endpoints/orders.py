@@ -69,9 +69,15 @@ async def create_order(
     chat_response['business_user'] = business_user_data
     setattr(order_obj, 'chat', chat_response)
 
+    # TODO: возможно, в будущем это надо будет убрать,
+    # если данные клиента не понадобятся
+    client_user_data = await accounts_service.get_user_data(
+        order_obj.client_id
+    )
     # Отправить данные заказа в телеграм чат
     orders_telegram_bot.send_order_message(
-        order_obj, business_user_data, order_data_dict
+        order_obj, business_user_data, client_user_data,
+        order_data_dict
     )
 
     return order_obj

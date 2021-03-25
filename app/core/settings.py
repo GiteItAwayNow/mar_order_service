@@ -42,6 +42,10 @@ class Settings(BaseSettings):
     CHATS_SERVICE_ADDRESS: str
     SEND_CHAT_MESSAGE_ENDPOINT: str
 
+    # Catalogs service
+    CATALOGS_SERVICE_ADDRESS: str
+    UPDATE_STOCK_ENDPOINT: str
+
     # TELEGRAM
     ORDERS_TELEGRAM_BOT_TOKEN: str
     ORDERS_TELEGRAM_CHAT_ID: str

@@ -55,6 +55,8 @@ source .env
 * GET_USER_BY_BUSINESS_ID_ENDPOINT: эндпоинт для получения данных юзера по id его бизнес-профиля
 * CHATS_SERVICE_ADDRESS: адрес сервиса чатов
 * SEND_CHAT_MESSAGE_ENDPOINT: эндпоинт для отправки сообщения в чат
+* CATALOGS_SERVICE_ADDRESS: адрес сервиса каталогов
+* UPDATE_STOCK_ENDPOINT: эндпоинт для обновления стока продуктов
 
 * ORDERS_TELEGRAM_BOT_TOKEN: токен для управления Телеграм ботом
 * ORDERS_TELEGRAM_CHAT_ID: id чата, в который отправляются данные заказа

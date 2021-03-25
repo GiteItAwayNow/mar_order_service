@@ -3,7 +3,7 @@ from aiohttp import ClientSession
 from app.core.settings import settings
 
 
-class AccountService():
+class AccountsService():
     '''Сервис для получения данных из сервиса аккаунтов'''
 
     async def get_business_user_data(self, business_profile_id):
@@ -77,4 +77,4 @@ class AccountService():
                 return response_json
 
 
-accounts_service = AccountService()
+accounts_service = AccountsService()

@@ -1,6 +1,8 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Response, status
+from fastapi import (
+    APIRouter, Depends, HTTPException, Response, status
+)
 from tortoise.transactions import in_transaction
 
 from app.repos.order_products import OrderProductRepo
@@ -9,8 +11,9 @@ from app.schemas.orders import (
     OrderCreateSchema, OrderReadSchema
 )
 from app.services.accounts_service import accounts_service
-from app.services.chats_service import chats_service
 from app.services.cart_storage import cart_storage
+from app.services.catalogs_service import catalogs_service
+from app.services.chats_service import chats_service
 from app.services.orders_telegram_bot import orders_telegram_bot
 from app.utils.jwt_encoder import jwt_encoder
 from app.utils.router_dependencies import get_user_id_from_token
@@ -41,6 +44,15 @@ async def create_order(
     order_data_dict['client_id'] = current_user_id
 
     user_cart_storage_json = cart_storage.get_user_cart_json(current_user_id)
+
+    reserve_products_response_status = await catalogs_service.reserve_products(
+        user_cart_storage_json
+    )
+    if reserve_products_response_status >= 400:
+        raise HTTPException(
+            status_code=409,
+            detail='Not enough products in the stock'
+        )
 
     async with in_transaction():
         order_obj = await OrderRepo().create_object(

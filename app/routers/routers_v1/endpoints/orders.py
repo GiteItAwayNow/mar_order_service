@@ -73,6 +73,17 @@ async def create_order(
     business_user_jwt = jwt_encoder.encode_user_id(
         business_user_data['id']
     )
+
+    # TODO: возможно, в будущем это надо будет убрать,
+    # если данные клиента не понадобятся
+    client_user_data = await accounts_service.get_user_data(
+        order_obj.client_id
+    )
+
+    # Добавить в заказ дополнительные данные о клиенте 
+    order_obj.client_name = client_user_data['name']
+    order_obj.client_phone = client_user_data['phone']
+    
     # Отправить заказ в чат клиента
     chat_response = await chats_service.send_order(
         order_obj, business_user_jwt
@@ -81,11 +92,6 @@ async def create_order(
     chat_response['business_user'] = business_user_data
     setattr(order_obj, 'chat', chat_response)
 
-    # TODO: возможно, в будущем это надо будет убрать,
-    # если данные клиента не понадобятся
-    client_user_data = await accounts_service.get_user_data(
-        order_obj.client_id
-    )
     # Отправить данные заказа в телеграм чат
     orders_telegram_bot.send_order_message(
         order_obj, business_user_data, client_user_data,

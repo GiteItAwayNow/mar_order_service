@@ -55,6 +55,8 @@ class OrderReadSchema(ObjChangesDatetimeMixin, OrderBaseSchema):
     number: str
     payment_method: OrderPaymentMethodSchema
     client_id: UUID
+    client_name: str
+    client_phone: str
     delivery_price: condecimal(max_digits=10, decimal_places=2)
     order_price: condecimal(max_digits=10, decimal_places=2)
     total_price: condecimal(max_digits=10, decimal_places=2)

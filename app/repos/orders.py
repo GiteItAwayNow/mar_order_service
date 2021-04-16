@@ -2,6 +2,7 @@ from decimal import Decimal
 
 from app.models.orders import OrderModel
 from app.repos.base import BaseRepo
+from app.repos.utils import add_not_deleted_filter, add_updated_at_time
 
 
 class OrderRepo(BaseRepo):
@@ -30,5 +31,25 @@ class OrderRepo(BaseRepo):
         order_data_dict['total_price'] = Decimal(user_cart_storage_json['total_price'])
 
         order_obj = await super().create_object(order_data_dict)
+
+        return order_obj
+
+    @add_not_deleted_filter
+    @add_updated_at_time
+    async def update_object(self, order_data_dict, filters):
+        '''Обновить объект заказа в БД
+
+        Args:
+        -----------------------
+        order_data_dict: dict
+            данные заказа для обновления
+        filters: dict
+            фильтры для получения нужного объекта из БД
+
+        Return: OrderModel object
+            обновленный объект продукта
+
+        '''
+        order_obj = await super().update_object(order_data_dict, filters)
 
         return order_obj

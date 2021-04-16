@@ -5,15 +5,20 @@ from fastapi import (
 )
 from tortoise.transactions import in_transaction
 
+from app.models.enums import OrderStatusEnum
 from app.repos.order_products import OrderProductRepo
 from app.repos.orders import OrderRepo
 from app.schemas.orders import (
     OrderCreateSchema, OrderReadSchema
 )
+from app.schemas.order_status import (
+    OrderStatusReadSchema, OrderStatusUpdateSchema
+)
 from app.services.accounts_service import accounts_service
 from app.services.cart_storage import cart_storage
 from app.services.catalogs_service import catalogs_service
 from app.services.chats_service import chats_service
+from app.services.notifications import notification_sender
 from app.services.orders_telegram_bot import orders_telegram_bot
 from app.utils.jwt_encoder import jwt_encoder
 from app.utils.router_dependencies import get_user_id_from_token
@@ -97,5 +102,47 @@ async def create_order(
         order_obj, business_user_data, client_user_data,
         order_data_dict
     )
+
+    return order_obj
+
+
+@router.patch('/orders/{order_id}/status', response_model=OrderStatusReadSchema)
+async def update_order_status(
+    order_id: UUID, order: OrderStatusUpdateSchema
+    ):
+    '''Изменить статус заказа, выполнить оплату
+    заказа для статуса confirmed
+    \f
+    Args:
+    -----------------------
+    order_id: UUID
+        UUID заказа, который нужно изменить
+
+    Returns:
+    -----------------------
+    product_obj: OrderModel object
+        объект продукта с обновленным статусом
+
+    '''
+    order_data_dict = order.dict()
+
+    # TODO: сделать оплату при подтверждении заказа
+    # когда приходит статус "confirmed"
+
+    order_obj = await OrderRepo().update_object(
+        {'status': order_data_dict['status']},
+        filters={'id': order_id}
+    )
+
+    # Получить данные пользователя по id его БП
+    business_user_data = await accounts_service.get_business_user_data(
+        order_obj.business_profile_id
+    )
+
+    notification_data = notification_sender.group_notification_data(
+        'order_status', data_obj=order_obj,
+        recipient_id=order_obj.client_id, sender=business_user_data
+    )
+    notification_sender.send(notification_data)
 
     return order_obj

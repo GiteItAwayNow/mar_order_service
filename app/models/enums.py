@@ -12,5 +12,6 @@ class OrderPaymentMethodEnum(str, Enum):
 class OrderStatusEnum(str, Enum):
     '''Статусы заказа'''
     PLACED = 'placed'
+    CONFIRMED = 'confirmed'
     COMPLETED = 'completed'
     CANCELED = 'canceled'

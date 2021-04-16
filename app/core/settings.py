@@ -50,6 +50,10 @@ class Settings(BaseSettings):
     ORDERS_TELEGRAM_BOT_TOKEN: str
     ORDERS_TELEGRAM_CHAT_ID: str
 
+    # Kafka
+    KAFKA_BROKERS: str
+    NOTIFICATIONS_TOPIC: str
+
     @validator('DATABASE_URL', pre=True)
     def assemble_db_connection(cls, value, values):
         '''Сделать урл для подключения к БД'''
@@ -76,6 +80,11 @@ class Settings(BaseSettings):
             encoding='utf8',
             decode_responses=True
         )
+
+    @validator('KAFKA_BROKERS')
+    def split_brokers_list(cls, brokers_list: str):
+        '''Разделить строку, содержащую адреса брокеров Kafka'''
+        return brokers_list.split(',')
 
 
 settings = Settings()
